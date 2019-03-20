@@ -31,7 +31,7 @@
             <icon-edit />
           </edit-link>
         </span>
-        <div class="title is-1">
+        <div class="title is-1" :title="'Version n°'+document.version">
           <slot name="icon-document">
             <icon-document :document-type="documentType" />
           </slot>
@@ -134,6 +134,18 @@
         .outing-date{
             margin-left:0.5rem;
         }
+    }
+
+    @media print {
+      .title>svg {
+        display: none;
+      }
+
+      .title::after{
+        content:"( " attr(title) " )";
+        font-size: 1rem;
+        padding-left: 1.5rem;
+      }
     }
 
 </style>
