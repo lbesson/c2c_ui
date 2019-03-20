@@ -4,7 +4,7 @@
     <document-view-header :document="document" :version="version" :promise="promise" />
     <div v-if="document" class="columns is-block-print">
 
-      <div class="column is-3 is-12-print">
+      <div class="column is-3 is-12-print en-bas">
         <map-box :document="document" @has-protection-area="hasProtectionArea=true" />
         <tool-box :document="document" />
       </div>
@@ -203,5 +203,16 @@
   }
   .automatic-gears{
     margin-bottom: 1.5rem;
+  }
+
+  @media print {
+    .is-block-print {
+      position: relative;
+    }
+
+    .en-bas{
+      position:absolute;
+      bottom: 0%;
+    }
   }
 </style>

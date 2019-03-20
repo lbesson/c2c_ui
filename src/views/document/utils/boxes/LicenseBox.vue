@@ -104,12 +104,8 @@
     text-align: left !important;
   }
 
-  .licence-print:before{
-    content:"Le texte de cette page est disponible sous licence ";
-  }
-
   .licence-print:after{
-    content:"Les informations mises à disposition sur ce site n'engagent ni leurs auteurs ni Camptocamp-Association.";
+    content:" Les informations mises à disposition sur ce site n'engagent ni leurs auteurs ni Camptocamp-Association.";
   }
 
   a {
