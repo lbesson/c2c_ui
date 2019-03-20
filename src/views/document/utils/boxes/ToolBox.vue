@@ -1,99 +1,99 @@
 <template>
-  <div class="box no-print">
+  <div class="box">
+    <div class="no-print">
+      <associated-documents :document="document" />
 
-    <associated-documents :document="document" />
-
-    <div class="has-text-centered" v-if="isNormalView && available_langs.length>0">
-      <span v-translate>View in other lang</span>
-      <br>
-      <span class="lang-switcher-box-list">
-        <span v-for="lang of available_langs" :key="lang">
-          <document-link :document="document" :lang="lang">
-            {{ $gettext(lang, 'langs') }}
-          </document-link>
+      <div class="has-text-centered" v-if="isNormalView && available_langs.length>0">
+        <span v-translate>View in other lang</span>
+        <br>
+        <span class="lang-switcher-box-list">
+          <span v-for="lang of available_langs" :key="lang">
+            <document-link :document="document" :lang="lang">
+              {{ $gettext(lang, 'langs') }}
+            </document-link>
+          </span>
         </span>
-      </span>
-      <hr>
-    </div>
-
-    <tool-box-button
-      v-if="documentType==='profile'"
-      :to="{ name: 'outings', query: {u:document.document_id} }"
-      :label="$gettext('outings')"
-      icon="edit">
-      <icon-outing slot="icon" />
-    </tool-box-button>
-
-    <tool-box-button
-      v-if="documentType==='profile'"
-      :to="{ name: 'whatsnew', query: {u:document.document_id} }"
-      :label="$gettext('Contributions')"
-      icon="edit" />
-
-    <tool-box-button
-      v-if="document.geometry && document.geometry.geom"
-      :to="linkToClosestDocuments"
-      :label="$gettext('See other documents nearby')"
-      icon="compass" />
-
-    <tool-box-button
-      v-if="documentType!='profile' || $user.isModerator || document.document_id === $user.id"
-      :to="{name:documentType + '-history', params:{id:document.document_id, lang:document.cooked.lang}}"
-      :label="$gettext('History')"
-      icon="history" />
-
-    <tool-box-button
-      v-if="isEditable && showAssociationEditor"
-      @click="$refs.associationsWindow.show()"
-      icon="link"
-      :label="$gettext('Edit associations')" />
-
-    <tool-box-button
-      v-if="isEditable && hasMissingLangs"
-      @click="$refs.translateWindow.show()"
-      icon="edit"
-      :label="$gettext('Translate into an other lang')" />
-
-    <hr>
-
-    <!-- Moderator zone -->
-    <div v-if="$user.isModerator && isEditable">
+        <hr>
+      </div>
 
       <tool-box-button
-        v-if="documentType !== 'profile'"
-        @click="lockDocumentAction"
-        :icon="document.protected ? 'lock' : 'unlock'"
-        :class="document.protected ? 'lock-button-red' : 'lock-button-green'"
-        :label="document.protected ? $gettext('Unprotect document') : $gettext('Protect document')" />
+        v-if="documentType==='profile'"
+        :to="{ name: 'outings', query: {u:document.document_id} }"
+        :label="$gettext('outings')"
+        icon="edit">
+        <icon-outing slot="icon" />
+      </tool-box-button>
 
       <tool-box-button
-        v-if="documentType !== 'profile'"
-        @click="$refs.MergeDocumentWindow.show()"
-        icon="object-group"
-        :label="$gettext('Merge with other document')" />
+        v-if="documentType==='profile'"
+        :to="{ name: 'whatsnew', query: {u:document.document_id} }"
+        :label="$gettext('Contributions')"
+        icon="edit" />
 
       <tool-box-button
-        v-if="document.available_langs.length > 1 && documentType !== 'profile'"
-        @click="$refs.DeleteLocaleWindow.show()"
-        :icon="['fas','trash']"
-        :label="$gettext('Delete this locale')" />
+        v-if="document.geometry && document.geometry.geom"
+        :to="linkToClosestDocuments"
+        :label="$gettext('See other documents nearby')"
+        icon="compass" />
 
       <tool-box-button
-        v-if="documentType === 'profile'"
-        @click="lockAccountAction"
-        icon="user-lock"
-        :class="{'lock-button-red':isAccountBlocked}"
-        :label="isAccountBlocked ? $gettext('Unblock account') : $gettext('Block account')" />
+        v-if="documentType!='profile' || $user.isModerator || document.document_id === $user.id"
+        :to="{name:documentType + '-history', params:{id:document.document_id, lang:document.cooked.lang}}"
+        :label="$gettext('History')"
+        icon="history" />
 
       <tool-box-button
-        v-if="documentType !== 'profile'"
-        @click="$refs.deleteDocumentWindow.show()"
-        :icon="['fas','trash']"
-        :label="$gettext('Delete this document')" />
+        v-if="isEditable && showAssociationEditor"
+        @click="$refs.associationsWindow.show()"
+        icon="link"
+        :label="$gettext('Edit associations')" />
+
+      <tool-box-button
+        v-if="isEditable && hasMissingLangs"
+        @click="$refs.translateWindow.show()"
+        icon="edit"
+        :label="$gettext('Translate into an other lang')" />
 
       <hr>
-    </div>
 
+      <!-- Moderator zone -->
+      <div v-if="$user.isModerator && isEditable">
+
+        <tool-box-button
+          v-if="documentType !== 'profile'"
+          @click="lockDocumentAction"
+          :icon="document.protected ? 'lock' : 'unlock'"
+          :class="document.protected ? 'lock-button-red' : 'lock-button-green'"
+          :label="document.protected ? $gettext('Unprotect document') : $gettext('Protect document')" />
+
+        <tool-box-button
+          v-if="documentType !== 'profile'"
+          @click="$refs.MergeDocumentWindow.show()"
+          icon="object-group"
+          :label="$gettext('Merge with other document')" />
+
+        <tool-box-button
+          v-if="document.available_langs.length > 1 && documentType !== 'profile'"
+          @click="$refs.DeleteLocaleWindow.show()"
+          :icon="['fas','trash']"
+          :label="$gettext('Delete this locale')" />
+
+        <tool-box-button
+          v-if="documentType === 'profile'"
+          @click="lockAccountAction"
+          icon="user-lock"
+          :class="{'lock-button-red':isAccountBlocked}"
+          :label="isAccountBlocked ? $gettext('Unblock account') : $gettext('Block account')" />
+
+        <tool-box-button
+          v-if="documentType !== 'profile'"
+          @click="$refs.deleteDocumentWindow.show()"
+          :icon="['fas','trash']"
+          :label="$gettext('Delete this document')" />
+
+        <hr>
+      </div>
+    </div>
     <license-box :document="document" />
 
     <!-- Modal windows -->

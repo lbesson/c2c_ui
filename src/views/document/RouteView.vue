@@ -4,7 +4,7 @@
     <document-view-header :document="document" :version="version" :promise="promise" />
     <div v-if="document" class="columns is-block-print">
 
-      <div class="column is-3 no-print">
+      <div class="column is-3 is-12-print">
         <map-box :document="document" @has-protection-area="hasProtectionArea=true" />
         <tool-box :document="document" />
       </div>

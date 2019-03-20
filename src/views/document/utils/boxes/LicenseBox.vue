@@ -1,5 +1,5 @@
 <template>
-  <div class="has-text-centered">
+  <div class="has-text-centered licence-print">
     <a
       v-if="license === 'by-sa'"
       :href="'https://creativecommons.org/licenses/by-sa/3.0/deed.' + $language.current"
@@ -94,3 +94,26 @@
     }
   };
 </script>
+
+<style lang="scss" scoped>
+
+@import '@/assets/sass/variables.scss';
+
+@media print{
+  .licence-print{
+    text-align: left !important;
+  }
+
+  .licence-print:before{
+    content:"Le texte de cette page est disponible sous licence ";
+  }
+
+  .licence-print:after{
+    content:"Les informations mises à disposition sur ce site n'engagent ni leurs auteurs ni Camptocamp-Association.";
+  }
+
+  a {
+    color: $text !important;
+  }
+}
+</style>
